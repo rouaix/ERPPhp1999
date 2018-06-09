@@ -1,0 +1,1 @@
+<p id="centre"><img src="images/png/bombe.png" vspace="10" hspace="10"></p>
