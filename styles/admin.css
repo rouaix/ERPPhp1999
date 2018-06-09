@@ -1,0 +1,22 @@
+/* CSS Document */
+.admin{margin:0;padding:0;clear:both;overflow:hidden;}
+
+p.admin{padding:0 0 0 42px;}
+h3.admin{font-size:18px;padding:5px 5px 5px 10px;margin:2px;color:#333;background-color:#eee;text-align:left;}
+
+div.admin{display:block;padding:2px;margin:2px;border:1px solid #ddd;}
+div#fixe.admin{padding:2px;margin:2px;}
+div#fixe.admin:hover{background-color:#eee;}
+
+img.admin{width:16px;height:16px;vertical-align:middle;margin-right:5px;border:0;}
+a.admin{text-decoration:none;margin:0;padding:0;border:0;}
+input.admin{width:98%;}
+td#champs.admin{}
+
+td#nom.admin{padding:0 5px 0 5px;vertical-align:middle;border:1px solid #ddd;}
+td#droits.admin{text-align:center;vertical-align:middle;padding:2px 5px 2px 5px;border:1px solid #ddd;}
+
+tr.admin:hover{background-color:#ffff99;}
+
+div#limitefixe.admin{padding:2px;margin:2px;height:100px;overflow-x:hidden;overflow-y:scroll;}
+div#limitefixe.admin:hover{background-color:#ffff33;}

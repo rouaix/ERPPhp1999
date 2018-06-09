@@ -1,0 +1,48 @@
+/* CSS Document */
+
+.agenda{padding:0;margin:0;font-size:12px;}
+a.agenda{text-decoration:none;margin:0;padding:0;border:0;font-size:12px;}
+a.agenda:hover{color:#000;}
+i.agenda{font-size:10px;}
+input.agenda{padding:0;margin:2px;text-align:center;}
+
+.pref{font-size:12px;}
+input.pref{width:50px;text-align:center;margin-left:5px;margin-right:5px;}
+form.pref{display:inline;margin:10px;}
+div.pref{display:inline;}
+
+#actif.agenda{background-color:#eee;}
+#sactif.agenda{background-color:#eee;text-align:center;vertical-align:middle;}
+#even.agenda{font-weight:bold;}
+
+div.agenda{margin:0;display:block;clear:both;}
+
+div#jour.agenda{float:left;cursor:pointer;font-weight:bold;text-align:center;vertical-align:middle;padding:2px;width:40px;}
+div#texte.agenda{padding:2px;background-color:#fff;}
+div#mois.agenda{background-color:#fff;display:block;padding:5px;}
+div#plan.agenda{text-align:left;}
+
+p.agenda{padding:0;margin:0;}
+
+img.agenda{width:16px;height:16px;margin-right:5px;border:0;}
+
+img#titre.agenda{width:16px;height:16px;vertical-align:middle;margin:0;border:0;}
+
+table.agenda{border-collapse: separate; border-spacing: 0;}
+td.agenda{border:1px solid #eee;}
+
+td#gauche.agenda{vertical-align:middle;border:0px;text-align:left;}
+td#droite.agenda{vertical-align:middle;border:0px;text-align:right;}
+td#titre.agenda{vertical-align:middle;border:0px;text-align:center;}
+td#semaine.agenda{font-weight:bold;text-align:center;vertical-align:middle;}
+td#jour.agenda{cursor:pointer;font-weight:bold;text-align:center;vertical-align:middle;padding:2px;width:60px;}
+td#plan.agenda{text-align:left;vertical-align:middle;}
+td#quart.agenda{padding:0;margin:0;border:0;}
+
+td#ptitre.agenda{vertical-align:middle;border:0px;text-align:center;}
+td#separe.agenda{vertical-align:middle;border:0px;text-align:center;width:20px;background: url('../images/gif/navigation-separator.gif') repeat-y center top;}
+
+.evtheure{display:block;padding:2px 2px 2px 2px;}
+div.evtheure{padding:0px;margin:5px;border:1px dotted #222222;}
+p.evtheure{margin-left:48px;padding:2px;}
+
