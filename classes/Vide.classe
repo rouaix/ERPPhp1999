@@ -1,0 +1,49 @@
+<?php 
+
+/** 
+ * <p>Modèle de Classe</p> 
+ *  
+ * @name Classe Vide
+ * @author Daniel ROUAIX <daniel@rouaix.com>  
+ * @link http://www.rouaix.com & http://www.rouaix.net 
+ * @copyright Daniel ROUAIX 2012
+ * @version 1.0.0 
+ * @package vide.classe
+ */ 
+  
+ class vide { 
+  
+    /*~*~*~*~*~*~*~*~*~*~*/ 
+    /*  1. propriétés    */ 
+    /*~*~*~*~*~*~*~*~*~*~*/ 
+     
+    /** 
+    * @var (String, resource ...) 
+    * @desc Nom du serveur MySQL 
+    */ 
+    private $propriete; 
+     
+    /*~*~*~*~*~*~*~*~*~*~*/ 
+    /*  2. méthodes      */ 
+    /*~*~*~*~*~*~*~*~*~*~*/ 
+     
+    /** 
+    * Constructeur 
+    *  
+    * <p>création de l'instance de la classe</p> 
+    *  
+    * @name Nom de la classe::__construct() 
+    * @param nom du premier paramètre 
+    * @param nom du second paramètre 
+    * @param etc ... 
+    * @return void  
+    */ 
+    public function __construct() { 
+     
+    }  
+     
+    public function __destruct() { 
+     
+    } 
+ } 
+ ?> 

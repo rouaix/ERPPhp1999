@@ -1,0 +1,23 @@
+
+ Copiez le code suivant dans le code html de  la page web  à l'endroit ou voulez voir l'animation
+
+<OBJECT CLASSID="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+WIDTH="100" HEIGHT="100"
+CODEBASE="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0">
+<PARAM NAME="MOVIE" VALUE="clock8.swf">
+<PARAM NAME="PLAY" VALUE="true">
+<PARAM NAME="LOOP" VALUE="true">
+<PARAM NAME="WMODE" VALUE="Transparent">
+<PARAM NAME="QUALITY" VALUE="high">
+<EMBED SRC="clock8.swf" WIDTH="100" HEIGHT="100" PLAY="true" LOOP="true" WMODE="Transparent" QUALITY="high"
+PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+</EMBED>
+</OBJECT>
+
+
+
+
+
+ 
+
+Copier le fichier(clock8.swf)  dans le meme dossier que votre page web

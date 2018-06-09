@@ -1,0 +1,173 @@
+<?php
+if(!isset($_SESSION)){session_start();} 
+/** @name Classe UserUpload // @author Daniel ROUAIX <daniel@rouaix.com> // @link http://www.rouaix.com & http://www.rouaix.net // @copyright Daniel ROUAIX 2012 // @version 1.0.0 // @package UserUpload.classe */ 
+  
+ class UserUpload {  
+    /* 1. propriétés */     
+    private $myFile; /** @var (String) // @desc Fichier envoyé par formulaire */      
+    private $myDir; /** @var (String) // @desc Dossier dans lequel seront stockés les fichiers envoyés */
+    private $myMaxSize; /** @var (Integer) // @desc Taille maximale acceptée pour un fichier envoyé */     
+    private $myTypes; /** @var (Array) // @desc Types de fichiers envoyés acceptés */ 
+    private $myName; /** @var (string) // @desc Nom du fichier après copie */ 
+    
+    /* 2. méthodes */    
+    public function __construct() {
+      /** Constructeur // création de l'instance de la classe // @name Nom de la classe::__construct() // @return void */        
+      $this->myTypes=array(); // $this->myTypes est un tableau à deux dimensions.       
+      $this->myName=null; // on place la valeur de myName à null  
+    }
+    
+    /* 2.1 méthodes privées */     
+    private function testDir($dir) {
+      /** Vérifie l'existence d'un dossier, renvoie une erreur si le dossier est introuvable // @name myUpload::testDir() // @param $dir // @return string */  
+        //    la fonction is_dir teste l'existence d'un dossier 
+        if (is_dir($dir)) { 
+          $myDir=$dir; // si le dossier existe, j'applique la valeur $dir à la propriété $this->dir // lorsque nous lanceront la copie de fichier, nous rappelleront la propriété $this->dir 
+        } else {           
+          $myDir=null; // si il y a une erreur lors du paramétrage, je renvoie une valeur nulle 
+        }     
+      return $myDir; // $myDir est la valeur retournée (string) 
+    } 
+     
+    private function fileSizer($file) { 
+      return $file['size']; /** Renvoie la taille du fichier // @name myUpload::fileSizer() // @param $file // @return int */ 
+    } 
+     
+    private function fileType($file) {      
+      return $file['type'];/** Renvoie le type du fichier // @name myUpload::fileType() // @param $file // @return string */   
+    } 
+     
+    private function myCopy($file, $dir, $nom) {
+      /** Exécute la copie du fichier // Copie le fichier dans le dossier spécifié // @name myUpload::fileSizer() // @param $dir // @return voix */        
+      copy($file['tmp_name'], $dir."".$nom); // aucune vérification à faire, puisque nos contrôles ont été effectués en amont 
+    } 
+
+    /*  2.1 méthodes publiques */    
+    public function setFile($file) {
+      /** Déclare le fichier posté // @name myUpload::setFile() // @param $file // @return string */  
+        if ($file['tmp_name']!="") { 
+          $myFile=$file; // on teste que le fichier envoyé est bien nommé s'il n'est pas nommé, cela signifie qu'il y a soit une erreur dans le formulaire, soit une erreur dans l'instanciation 
+        } else {         
+          $myFile=null; // si le fichier est en erreur, on renvoie un null
+        } 
+      $this->myFile=$myFile; 
+    } 
+    
+    public function setMyName($name) {
+    
+      $name = strtr($name,' ÀÁÂÃÄÅÇèéÊËÌÍÎÏÒÓÔÕÖÙÚÛÜ¯àâãäåçèéêëìíîï©£òóôõöùúûü~ÿ-','_AAAAAACEEEEIIIIOOOOOUUUUYaaaaaceeeeiiiioooooouuuuyyy_'); // On remplace les lettres accentutées par les non accentuées dans $name
+      $name = preg_replace('/([^.a-z0-9]+)/i', '_', $name); // On remplace tout ce qui n'est pas une lettre non accentuées ou un chiffre par _ dans $name
+      //$name = ucfirst(strtolower($name));
+      /** Déclare le nom du fichier à copier // Le nom du fichier après copie. // @name myUpload::setName() // @param $name // @return string */  
+      $this->myName=$name; 
+    } 
+     
+    public function addFileType($typeFile) {
+      //include("UserUpload.mime.inc"); 
+      /** Déclare un nouveau type de fichier accepté // Liste les types de fichiers acceptés. // @name myUpload::addFileType() // @param $typeFile // @return void */  
+      $i=0; // on déclare un petit compteur qui servira à compter le nombre de type de fichiers acceptés        
+        foreach($this->myTypes as $key) { 
+          $i++; // J'ai besoin de connaître le nombre de fichiers acceptés lors de l'instanciation. Pour ça, je boucle sur la propriété myTypes (array) et j'incrémente le compteur 
+        }     
+      $this->myTypes[$i]=$typeFile; // on ajoute comme valeur $typeFile à la propriété $this->myTypes Comme la propriété myTypes est un tableau (array), on incrémente $i de 1 pour ne pas écraser la valeur précédente // j'ai appliqué la valeur directement à ma propriété. je ne retourne donc directement rien 
+    } 
+    
+    public function setMaxSize($max) { 
+      /** Taille maximale de fichier accepté // Déclare la taille maximale en Octets acceptée par le programme. Si le fichier envoyé est trop grand, on renvoie une valeur nulle. // @name myUpload::setMaxSize() // @param $typeFile // @return void */     
+        if (is_integer($max)) { 
+          $myMax=$max; // je vérifie que la valeur de $max est bien un nombre entier 
+        } else {         
+          $myMax=null; // si une erreur est détectée, on renvoie une valeur null
+        } 
+      $this->myMaxSize=$myMax; 
+    } 
+    
+    public function setMyDir($dir) {      
+      if(isset($_SESSION["userid"])){
+        if($_SESSION["userid"]!=''){
+          if(!is_dir('../fichiers/users/'.$_SESSION["userid"])){
+            if(!is_dir('../fichiers')){
+              mkdir ('../fichiers');
+                $Fnm = "../fichiers/index.php";
+                $inF = fopen($Fnm,"w");
+                $texte = "<"."?php"."\n"."\n"."?".">";
+                fwrite($inF,$texte);
+                fclose($inF);
+            }
+            if(!is_dir('../fichiers/users')){
+              mkdir ('../fichiers/users');
+                $Fnm = "../fichiers/users/index.php";
+                $inF = fopen($Fnm,"w");
+                $texte = "<"."?php"."\n"."\n"."?".">";
+                fwrite($inF,$texte);
+                fclose($inF);
+                $chemin = '../fichiers/users';
+            }
+                      
+            mkdir ($chemin.'/'.$_SESSION["userid"]);
+            $Fnm = $chemin.'/'.$_SESSION["userid"].'/index.php';
+            $inF = fopen($Fnm,"w");
+            $texte = "<"."?php"."\n"."\n"."?".">";
+            fwrite($inF,$texte);
+            fclose($inF);
+          }
+          $chemin = '../fichiers/users/'.$_SESSION["userid"];              
+        }
+      }
+
+      if($dir!=''){        
+        if(strrpos($dir,"../") === false){$dir = "../".$dir;}
+        if(!administrateur($_SESSION["userid"])){
+          
+          if(strrpos($dir, "fichiers/users/".$_SESSION["userid"]) === false){
+            $dir = $chemin;
+          }                 
+        }
+        if(!is_dir($dir)){
+          mkdir ($dir);
+          $Fnm = $dir."/index.php";
+          $inF = fopen($Fnm,"w");
+          $texte = "<"."?php"."\n"."\n"."?".">";
+          fwrite($inF,$texte);
+          fclose($inF);          
+        }                    
+      } 
+
+
+      
+
+            
+      /** Déclaration du dossier cible // Déclare la taille maximale en Octets acceptée par le programme. Si le fichier envoyé est trop grand, on renvoie une valeur nulle. // @name myUpload::setMyDir() // @param $dir // @return void */        
+      $myDir=$this->testDir($dir); // j'appelle la méthode de test du dossier que j'ai crée plus tôt. le nom de la variable n'a aucune importance. seul compte le nom de la propriété ($this->myDir) 
+      $this->myDir=$myDir;
+    } 
+        
+    public function myUpload() { 
+      // on teste les propriétés une par une $this->myFile      
+      if ($this->myFile!=null) { 
+        if ($this->myMaxSize!=null) { 
+            if ($this->myDir!=null) { 
+                if ($this->myName!=null) { 
+                    if ($this->myTypes[0]!=null) { 
+                      $mySize=$this->fileSizer($this->myFile); // je récupère maintenant la taille du fichier
+                        if ($mySize<=$this->myMaxSize) {
+                          // je la compare à la taille maximale acceptée 
+                          $fileType=$this->fileType($this->myFile); // je récupère le type de fichier et je le compare à la liste des types acceptés 
+                            foreach ($this->myTypes as $key) { 
+                              if ($key==$fileType) { 
+                                $this->myCopy($this->myFile, $this->myDir, $this->myName); // puis exécution de l'upload 
+                                //$_SESSION["alerte"]= $fileType;
+                              } 
+                            } 
+                        }else{$_SESSION["alerte"]="Le fichier est trop gros";} 
+                    }else{$_SESSION["alerte"]="Vous devez specifier les types de fichiers acceptes.";} 
+                }else{$_SESSION["alerte"]="Vous devez specifier un nom pour le fichier.";} 
+            }else{$_SESSION["alerte"]="Le dossier de destination n'est pas bon. Veuillez corriger.<p>".$this->myDir;} 
+        }else{$_SESSION["alerte"]="La taille maximale n'a pas ete specifiee, veuillez corriger.";} 
+      }else{$_SESSION["alerte"]="Le fichier n'a pas ete recu.";} 
+    }
+    
+    public function __destruct() { 
+      /** Destructeur // Destruction de l'instance de classe // @name myUpload::__destruct() // @return void */  
+    } 
+}
