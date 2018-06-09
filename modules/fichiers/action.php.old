@@ -1,0 +1,19 @@
+<?php
+if(isset($_SESSION["action"])){
+  if($_SESSION["action"]=="fichierupload"){
+    $target = "";
+    if($_SESSION["fichier_type"]=="carte"){$target = "../fichiers/fichiers/fichiers/cartes/";}
+    else if($_SESSION["fichier_type"]=="fichier"){$target = "../fichiers/fichiers/fichiers/";}
+    else if($_SESSION["fichier_type"]=="doc"){$target = "../fichiers/fichiers/fichiers/documents/";}
+    else if($_SESSION["fichier_type"]=="x"){$target = "../".$_SESSION["rep"]."/";}
+    else if($_SESSION["fichier_type"]=="userphoto"){
+      repertoire_creation("photos");
+      $target = "../fichiers/users/photos/";
+    }    
+    if(file_exists("inc.upload.php")){include("inc.upload.php");}
+    unset($target);
+    unset($_SESSION["fichier_type"]);
+    unset($_SESSION["action"]);
+  }
+}
+?>

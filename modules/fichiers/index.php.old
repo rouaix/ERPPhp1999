@@ -1,0 +1,94 @@
+<?php
+//if(file_exists("../../securite.php")){include("../../securite.php");}
+
+$x = strrpos(@$_SESSION["rep"], "fichiers");
+if($x === false){
+  $_SESSION["rep"] = "fichiers/fichiers/fichiers/";
+}
+
+  $format = array("png","pdf","txt","jpg","mm");
+
+  $mime = array();
+  $dir = "images/mime/";
+  if ($handle = opendir($dir)) {
+    while (false !== ($file = readdir($handle))) {
+      if ($file != "." && $file != ".." && $file != "index.php"){
+        $ext = pathinfo($file, PATHINFO_FILENAME);
+        array_push($mime, $ext);
+      }
+    }
+  }
+  closedir($handle);
+  
+if(!isset($_SESSION["rep"]) or @$_SESSION["rep"]== ""){$_SESSION["rep"] = "fichiers/fichiers/fichiers/";}
+
+if($_SESSION["rep"] != "fichiers/fichiers/fichiers/"){
+  echo "<a class=\"module\" href=\"".$_SESSION["lien"]."?rep=fichiers/fichiers/fichiers/\" title=\"Dossier\">";
+  echo "<div class=\"module\" id=\"ligne\">";
+  echo "<img src=\"".$_SESSION["ico"]["retour"]."\" class=\"module\">";
+  echo "<b>Retour</b>";
+  echo "</div>";
+  echo "</a>";  
+}
+      
+if ($handle = opendir($_SESSION["rep"])) {
+  $listefichiers = array ();
+  while (false !== ($listefile = readdir($handle))){array_push ($listefichiers,$listefile);}
+  sort($listefichiers);
+
+//while (false !== ($file = readdir($handle))){
+while (list($key,$file) = each($listefichiers)){
+  if ($file != "." && $file != ".." && $file != "index.php"){
+    if(is_dir($_SESSION["rep"].$file)){      
+        echo "<a class=\"module\" href=\"".$_SESSION["lien"]."?rep=".$_SESSION["rep"].$file."/\" title=\"Dossier\">";
+        echo "<div class=\"module\" id=\"ligne\">";
+        echo "<img src=\"".$_SESSION["ico"]["dossier"]."\" id=\"i32\">";
+        echo "<b>".ucfirst($file)."</b>";
+        echo "</div>";
+        echo "</a>";      
+    }else{
+      $ext = pathinfo($file, PATHINFO_EXTENSION);
+      echo "<div class=\"module\" id=\"ligne\">";
+        echo "<a href=\"".$_SESSION["lien"]."?action=effacefichier&doc=".$file."&dir=".$_SESSION["rep"]."\" title=\"Supprimer !\nAttention, cette action est d&eacute;finitive !\">";
+              echo "<img src=\"".$_SESSION["ico"]["supprimer"]."\" id=\"i10\">";
+              echo "</a>";
+              echo "&nbsp;&nbsp;&nbsp;";
+              if(in_array($ext, $format)){
+                if($ext == "mm"){
+                  echo "<a href=\"".$_SESSION["lien"]."?page=cartes&carte=".$file."\" title=\"Afficher\">";
+                  if(in_array($ext,$mime)){echo "<img src=\"images/mime/".$ext.".png\" id=\"i32\">";}else{echo "<img src=\"images/mime/vide.png\" id=\"i32\">";}
+                  echo "</a>";
+                }else{
+                  echo "<a target=\"Fichier\" href=\"".$_SESSION["location"].$_SESSION["rep"].$file."\" title=\"Afficher\">";
+                  if(in_array($ext, $mime)){echo "<img src=\"images/mime/".$ext.".png\" id=\"i32\">";}else{echo "<img src=\"images/mime/vide.png\" id=\"i32\">";}
+                  echo "</a>";
+                }
+              }else{
+                if(in_array($ext, $mime)){echo "<img src=\"images/mime/".$ext.".png\" id=\"i32\">";}else{echo "<img src=\"images/mime/vide.png\" id=\"i32\">";}
+              }
+              
+              echo "&nbsp;&nbsp;&nbsp;";
+              $lien = $_SESSION["location"]."scripts/inc.download.php?";
+              $lien .= "action=fdownload";
+              $lien .= "&fdownload=".$file;
+              $lien .= "&fichier_type=x";
+              $lien .= "&fichier_dir=".$_SESSION["rep"];
+              echo "<a class=\"admin\" title=\"Chargement !\" href=\"".$lien."\">";
+              echo ucfirst($file).taille_fichier($_SESSION["rep"].$file);
+              echo "</a>";
+      echo "</div>";
+    }
+  }
+}
+  echo "<label class=\"module\" id=\"centre\">Ajouter un fichier !</label>";
+  echo "<form class=\"module\" id=\"centre\" method=\"POST\" action=\"".$_SESSION["lien"]."\" enctype=\"multipart/form-data\">";
+  echo "<input type=\"file\" name=\"fichier\" style=\"width:350px;padding:2px;\">";
+  echo "<input type=\"image\" id=\"i24\" style=\"margin-left:5px;\" src =\"".$_SESSION["ico"]["valider"]."\" title=\"Cliquez pour valider\">";
+  echo "<input type=\"hidden\" name=\"fichier_type\" value=\"x\">";
+  echo "<input type=\"hidden\" name=\"action\" value=\"fichierupload\">";
+  echo "</form><br>\n";
+
+//echo "</div>\n";
+closedir($handle);
+}
+?>
